@@ -1,6 +1,6 @@
 package com.aitongyi.web.dao.conf;
 
-import org.apache.commons.dbcp2.BasicDataSource;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
@@ -10,12 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.sql.DataSource;
-
-/**
- * Created by admin on 16/8/8.
- */
 
 @Configuration
 @EnableTransactionManagement
@@ -44,16 +38,16 @@ public class DatabaseConfig {
     private Integer maxIdle;
 
     @Bean(destroyMethod = "close")
-    public DataSource dataSource() {
+    public DruidDataSource dataSource() {
         logger.info("mysql url:"+dbUrl);
-        BasicDataSource dataSource = new BasicDataSource();
+        DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName(jdbcDriver);
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-        dataSource.setMaxTotal(maxTotal);
+        dataSource.setMaxActive(maxTotal);
         dataSource.setMinIdle(minIdle);
-        dataSource.setMaxIdle(maxIdle);
+//      dataSource.setMaxIdle(maxIdle);
         return dataSource;
     }
 
